@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+}
+
+group 'app.web.pavelk'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+def mainClassName2 = "app.web.pavelk.native2.Native2"
+
+jar {
+    manifest {
+        attributes "Main-Class": "$mainClassName2"
+    }
+
+    //compile implementations compileClasspath runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+processResources {
+    expand(project.properties)
+}
